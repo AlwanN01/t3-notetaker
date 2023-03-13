@@ -182,7 +182,12 @@ const config = {
     "config": {
       "engineType": "library"
     },
-    "binaryTargets": [],
+    "binaryTargets": [
+      {
+        "fromEnvVar": null,
+        "value": "linux-musl"
+      }
+    ],
     "previewFeatures": [],
     "isCustomOutput": true
   },
@@ -217,7 +222,7 @@ const PrismaClient = getPrismaClient(config)
 exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
-path.join(__dirname, "query_engine-windows.dll.node");
-path.join(process.cwd(), "prisma\\generated\\prisma-client-js\\query_engine-windows.dll.node")
+path.join(__dirname, "libquery_engine-linux-musl.so.node");
+path.join(process.cwd(), "prisma\\generated\\prisma-client-js\\libquery_engine-linux-musl.so.node")
 path.join(__dirname, "schema.prisma");
 path.join(process.cwd(), "prisma\\generated\\prisma-client-js\\schema.prisma")
