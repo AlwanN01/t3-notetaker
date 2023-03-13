@@ -8,6 +8,7 @@ import GithubProvider from "next-auth/providers/github";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
+import Credentials from "next-auth/providers/credentials";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -45,11 +46,29 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  //@ts-ignore
   adapter: PrismaAdapter(prisma),
   providers: [
     GithubProvider({
       clientId: env.GITHUB_CLIENT_ID,
       clientSecret: env.GITHUB_CLIENT_SECRET,
+    }),
+    Credentials({
+      id: "credential-login",
+      name: "Credential",
+      credentials: {
+        username: { label: "Username", type: "text ", placeholder: "name..." },
+        password: { label: "Password", type: "password" },
+      },
+      // eslint-disable-next-line @typescript-eslint/require-await
+      async authorize(credentials) {
+        console.log(credentials);
+
+        const user = { id: "1", name: "alwan", email: "alwan@example.com" };
+        if (user) return user;
+        return null;
+      },
     }),
     /**
      * ...add more providers here.
