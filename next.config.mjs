@@ -6,6 +6,10 @@
  */
 !process.env.SKIP_ENV_VALIDATION && (await import("./src/env.mjs"));
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+import { PrismaPlugin } from "@prisma/nextjs-monorepo-workaround-plugin";
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
@@ -19,6 +23,13 @@ const config = {
   i18n: {
     locales: ["en"],
     defaultLocale: "en",
+  },
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.plugins = [...config.plugins, new PrismaPlugin()];
+    }
+
+    return config;
   },
 };
 export default config;
